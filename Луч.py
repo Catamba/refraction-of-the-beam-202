@@ -257,7 +257,7 @@ class Example(QWidget):
                 draw.line((250, 250, 250 + int(sin_x2), 250 + int(cos_y2)), fill=('red'), width=3)
                 self.label_a.setText('Угол падения в первой среде =')
                 self.label_a1.setText('Угол преломления в первой среде =')
-                self.label_b.setText('Угол падения в первой среде =')
+                self.label_b.setText('Угол падения во второй среде =')
                 self.label_b1.setText('Угол преломления во второй среде =')
                 if sr1 == sr2:
                     self.lcd_a.display(a)
