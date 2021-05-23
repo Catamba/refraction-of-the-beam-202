@@ -9,7 +9,7 @@ from PIL.ImageQt import ImageQt
 import math
 
 
-SCREEN_SIZE = [1000, 530]
+SCREEN_SIZE = [1200, 530]
 SCREEN_SIZE2 = [500, 500]
 
 
