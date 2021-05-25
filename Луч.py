@@ -108,13 +108,13 @@ class Example(QWidget):
 
         # надписи
         self.label_angle0 = QLabel(self)
-        self.label_angle0.setText("0")
+        self.label_angle0.setText("90")
         self.label_angle0.move(5, 260)
         self.label_angle45 = QLabel(self)
         self.label_angle45.setText("45")
         self.label_angle45.move(3, 5)
         self.label_angle90 = QLabel(self)
-        self.label_angle90.setText("90")
+        self.label_angle90.setText("0")
         self.label_angle90.move(260, 3)
 
 
@@ -124,12 +124,7 @@ class Example(QWidget):
         self.label_a1 = QLabel(self)
         self.label_a1.setText("                                                                                     ")
         self.label_a1.move(520, 290)
-        self.label_b = QLabel(self)
-        self.label_b.setText("                                                                                      ")
-        self.label_b.move(520, 320)
-        self.label_b1 = QLabel(self)
-        self.label_b1.setText("                                                                                     ")
-        self.label_b1.move(520, 350)
+
 
         self.label_aa = QLabel(self)
         self.label_aa.setText('                                                                                ')
@@ -137,21 +132,11 @@ class Example(QWidget):
         self.label_aa1 = QLabel(self)
         self.label_aa1.setText("                                                                                ")
         self.label_aa1.move(790, 295)
-        self.label_bb = QLabel(self)
-        self.label_bb.setText("                                                                                ")
-        self.label_bb.move(790, 325)
-        self.label_bb1 = QLabel(self)
-        self.label_bb1.setText("                                                                                ")
-        self.label_bb1.move(790, 355)
 
         self.lcd_a = QLCDNumber(self)
         self.lcd_a.move(720, 260)
         self.lcd_a1 = QLCDNumber(self)
         self.lcd_a1.move(720, 290)
-        self.lcd_b = QLCDNumber(self)
-        self.lcd_b.move(720, 320)
-        self.lcd_b1 = QLCDNumber(self)
-        self.lcd_b1.move(720, 350)
 
 
 
@@ -189,123 +174,140 @@ class Example(QWidget):
                 return False
 
         if is_number(sreda1_text) and is_number(sreda2_text) and is_number(angle_text):
-            sr1 = float(self.name_input_sreda1.text())
-            sr2 = float(self.name_input_sreda2.text())
-            a = float(self.name_input_angle.text())
-            bigi = 1.0000000000000000000000000000000000000000000000000000000000000000000000000001
-            if (sr1 > bigi and sr2 > bigi) and (a > 0 and a < 90):
-                if sr1 < sr2:
-                    self.label_Error.setText(' ')
-                    self.label_Error2.setText(' ')
-                    a_prel = 90 - a
+            sreda1_text = self.name_input_sreda1.text()  # Получим текст из поля ввода
+            sreda2_text = self.name_input_sreda2.text()  # Получим текст из поля ввода
+            angle_text = self.name_input_angle.text()
 
-                    a_rad = a_prel * math.pi / 180
+            def is_number(str):
+                try:
+                    float(str)
+                    return True
+                except ValueError:
+                    return False
 
-                    cos = str(math.cos(a_rad))[0:3]
-                    sin = str(math.sin(a_rad))[0:3]
+            if is_number(sreda1_text) and is_number(sreda2_text) and is_number(angle_text):
+                sreda1_text = self.name_input_sreda1.text()  # Получим текст из поля ввода
+                sreda2_text = self.name_input_sreda2.text()  # Получим текст из поля ввода
+                angle_text = self.name_input_angle.text()
 
-                    cos_x1 = float(cos) * 250
-                    sin_y1 = float(sin) * 250
+                def is_number(str):
+                    try:
+                        float(str)
+                        return True
+                    except ValueError:
+                        return False
 
-                    sin11 = float(math.sin(a_rad))
-                    sin22 = (float(sr1) * float(sin11)) / float(sr2)
-                    arcsin22 = math.asin(sin22)  # в радианах
-                    cos22 = float(math.cos(arcsin22))
-                    b1 = cos22 * 180 / math.pi
+                if is_number(sreda1_text) and is_number(sreda2_text) and is_number(angle_text):
+                    sr1 = float(self.name_input_sreda1.text())
+                    sr2 = float(self.name_input_sreda2.text())
+                    a = float(self.name_input_angle.text())
+                    bigi = 1.0000000000000000000000000000000000000000000000000000000000000000000000000001
+                    if (sr1 > bigi and sr2 > bigi) and (a > 0 and a < 90):
+                        if sr1 < sr2:
+                            self.label_Error.setText(' ')
+                            self.label_Error2.setText(' ')
+                            a_prel = a
 
-                    cos_y2 = float(math.cos(arcsin22)) * 250
-                    sin_x2 = float(math.sin(arcsin22)) * 250
+                            a_rad = a_prel * math.pi / 180
 
-                    self.curr_image = self.orig_image.copy()
-                    draw = ImageDraw.Draw(self.curr_image)
-                    draw.line((float(cos_x1), float(sin_y1), 250, 250), fill=('red'), width=3)
-                    draw.line((250, 250, 250 + float(sin_x2), 250 + float(cos_y2)), fill=('red'), width=3)
-                    self.label_a.setText('Угол падения в первой среде =')
-                    self.label_a1.setText('Угол преломления в первой среде =')
-                    self.label_b.setText('Угол падения во второй среде =')
-                    self.label_b1.setText('Угол преломления во второй среде =')
-                    if sr1 == sr2:
-                        self.lcd_a.display(a)
-                        self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(a)
-                        self.lcd_b1.display(a_prel)
+                            cos = str(math.cos(a_rad))[0:3]
+                            sin = str(math.sin(a_rad))[0:3]
+
+                            cos_x1 = float(cos) * 250
+                            sin_y1 = float(sin) * 250
+
+                            sin11 = float(math.sin(a_rad))
+                            sin22 = (float(sr1) * float(sin11)) / float(sr2)
+                            arcsin22 = math.asin(sin22)  # в радианах
+                            cos22 = float(math.cos(arcsin22))
+                            b1 = cos22 * 180 / math.pi
+
+                            cos_y2 = float(math.cos(arcsin22)) * 250
+                            sin_x2 = float(math.sin(arcsin22)) * 250
+
+                            self.curr_image = self.orig_image.copy()
+                            draw = ImageDraw.Draw(self.curr_image)
+                            draw.line((float(cos_x1), float(sin_y1), 250, 250), fill=('red'), width=3)
+                            draw.line((250, 250, 250 + float(sin_x2), 250 + float(cos_y2)), fill=('red'), width=3)
+                            self.label_a.setText('Угол падения в первой среде =')
+                            self.label_a1.setText('Угол преломления в первой среде =')
+                            self.label_b.setText('Угол падения во второй среде =')
+                            self.label_b1.setText('Угол преломления во второй среде =')
+                            if sr1 == sr2:
+                                self.lcd_a.display(a_prel)
+                                self.lcd_a1.display(a_prel)
+                            else:
+                                self.lcd_a.display(a_prel)
+                                self.lcd_a1.display(90 - b1)
+
+                            self.label_aa.setText('градусов')
+                            self.label_aa1.setText('градусов')
+                            self.label_bb.setText('градусов')
+                            self.label_bb1.setText('градусов')
+
+                            self.curr_image = self.curr_image.rotate(self.degree, expand=True)
+                            # python 3.8 garbage collection issue
+                            self.a = ImageQt(self.curr_image)
+                            self.pixmap = QPixmap.fromImage(self.a)
+                            self.image.setPixmap(self.pixmap)
+                        else:
+                            self.label_Error.setText(' ')
+                            self.label_Error2.setText(' ')
+                            a_prel = 90 - a
+
+                            a_rad = a_prel * math.pi / 180
+
+                            cos = str(math.cos(a_rad))[0:3]
+                            sin = str(math.sin(a_rad))[0:3]
+
+                            cos_x1 = float(cos) * 250
+                            sin_y1 = float(sin) * 250
+
+                            sin11 = float(math.sin(a_rad))
+                            sin22 = (float(sr2) * float(sin11)) / float(sr1)
+                            arcsin22 = math.asin(sin22)  # в радианах
+                            cos22 = float(math.cos(arcsin22))
+                            b1 = cos22 * 180 / math.pi
+
+                            cos_y2 = float(str(math.cos(arcsin22))[:3]) * 250
+                            sin_x2 = float(str(math.sin(arcsin22))[:3]) * 250
+
+                            self.curr_image = self.orig_image.copy()
+                            draw = ImageDraw.Draw(self.curr_image)
+                            draw.line((float(cos_x1), float(sin_y1), 250, 250), fill=('red'), width=3)
+                            draw.line((250, 250, 250 + float(cos_y2), 250 + float(sin_x2)), fill=('red'), width=3)
+                            self.label_a.setText('Угол падения в первой среде =')
+                            self.label_a1.setText('Угол преломления в первой среде =')
+                            self.label_b.setText('Угол падения во второй среде =')
+                            self.label_b1.setText('Угол преломления во второй среде =')
+                            if sr1 == sr2:
+                                self.lcd_a.display(a)
+                                self.lcd_a1.display(a_prel)
+                                # self.lcd_b.display(a)
+                                # self.lcd_b1.display(a_prel)
+                            else:
+                                self.lcd_a.display(a)
+                                self.lcd_a1.display(a_prel)
+                                # self.lcd_b.display(b1)
+                                # self.lcd_b1.display(90 - b1)
+
+                            self.label_aa.setText('градусов')
+                            self.label_aa1.setText('градусов')
+                            self.label_bb.setText('градусов')
+                            self.label_bb1.setText('градусов')
+
+                            self.curr_image = self.curr_image.rotate(self.degree, expand=True)
+                            # python 3.8 garbage collection issue
+                            self.a = ImageQt(self.curr_image)
+                            self.pixmap = QPixmap.fromImage(self.a)
+                            self.image.setPixmap(self.pixmap)
+
                     else:
-                        self.lcd_a.display(a)
-                        self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(b1)
-                        self.lcd_b1.display(90 - b1)
-
-                    self.label_aa.setText('градусов')
-                    self.label_aa1.setText('градусов')
-                    self.label_bb.setText('градусов')
-                    self.label_bb1.setText('градусов')
-
-                    self.curr_image = self.curr_image.rotate(self.degree, expand=True)
-                    # python 3.8 garbage collection issue
-                    self.a = ImageQt(self.curr_image)
-                    self.pixmap = QPixmap.fromImage(self.a)
-                    self.image.setPixmap(self.pixmap)
+                        self.label_Error.setText('Вы ввели недопустимое')
+                        self.label_Error2.setText('значение!!!!!!')
                 else:
-                    self.label_Error.setText(' ')
-                    self.label_Error2.setText(' ')
-                    a_prel = 90 - a
-
-                    a_rad = a_prel * math.pi / 180
-
-                    cos = str(math.cos(a_rad))[0:3]
-                    sin = str(math.sin(a_rad))[0:3]
-
-                    cos_x1 = float(cos) * 250
-                    sin_y1 = float(sin) * 250
-
-                    sin11 = float(math.sin(a_rad))
-                    sin22 = (float(sr2) * float(sin11)) / float(sr1)
-                    arcsin22 = math.asin(sin22)  # в радианах
-                    cos22 = float(math.cos(arcsin22))
-                    b1 = cos22 * 180 / math.pi
-
-                    cos_y2 = float(str(math.cos(arcsin22))[:3]) * 250
-                    sin_x2 = float(str(math.sin(arcsin22))[:3]) * 250
-
-                    self.curr_image = self.orig_image.copy()
-                    draw = ImageDraw.Draw(self.curr_image)
-                    draw.line((float(cos_x1), float(sin_y1), 250, 250), fill=('red'), width=3)
-                    draw.line((250, 250, 250 + float(cos_y2), 250 + float(sin_x2)), fill=('red'), width=3)
-                    self.label_a.setText('Угол падения в первой среде =')
-                    self.label_a1.setText('Угол преломления в первой среде =')
-                    self.label_b.setText('Угол падения во второй среде =')
-                    self.label_b1.setText('Угол преломления во второй среде =')
-                    if sr1 == sr2:
-                        self.lcd_a.display(a)
-                        self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(a)
-                        self.lcd_b1.display(a_prel)
-                    else:
-                        self.lcd_a.display(a)
-                        self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(b1)
-                        self.lcd_b1.display(90 - b1)
-
-                    self.label_aa.setText('градусов')
-                    self.label_aa1.setText('градусов')
-                    self.label_bb.setText('градусов')
-                    self.label_bb1.setText('градусов')
-
-                    self.curr_image = self.curr_image.rotate(self.degree, expand=True)
-                    # python 3.8 garbage collection issue
-                    self.a = ImageQt(self.curr_image)
-                    self.pixmap = QPixmap.fromImage(self.a)
-                    self.image.setPixmap(self.pixmap)
-
-            else:
-                self.label_Error.setText('Вы ввели недопустимое')
-                self.label_Error2.setText('значение!!!!!!')
-        else:
-            self.label_Error.setText('Вы ввели недопустимое')
-            self.label_Error2.setText('значение!!!!!!')
-
-
-
+                    self.label_Error.setText('Вы ввели недопустимое')
+                    self.label_Error2.setText('значение!!!!!!')
 
     def Start(self):
         sreda1_text = self.name_input_sreda1.text()  # Получим текст из поля ввода
@@ -328,7 +330,7 @@ class Example(QWidget):
                 if sr1 < sr2:
                     self.label_Error.setText(' ')
                     self.label_Error2.setText(' ')
-                    a_prel = 90 - a
+                    a_prel = a
 
                     a_rad = a_prel * math.pi / 180
 
@@ -353,23 +355,15 @@ class Example(QWidget):
                     draw.line((250, 250, 250 + float(sin_x2), 250 + float(cos_y2)), fill=('red'), width=3)
                     self.label_a.setText('Угол падения в первой среде =')
                     self.label_a1.setText('Угол преломления в первой среде =')
-                    self.label_b.setText('Угол падения во второй среде =')
-                    self.label_b1.setText('Угол преломления во второй среде =')
                     if sr1 == sr2:
-                        self.lcd_a.display(a)
+                        self.lcd_a.display(a_prel)
                         self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(a)
-                        self.lcd_b1.display(a_prel)
                     else:
-                        self.lcd_a.display(a)
-                        self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(b1)
-                        self.lcd_b1.display(90 - b1)
+                        self.lcd_a.display(a_prel)
+                        self.lcd_a1.display(90 - b1)
 
                     self.label_aa.setText('градусов')
                     self.label_aa1.setText('градусов')
-                    self.label_bb.setText('градусов')
-                    self.label_bb1.setText('градусов')
 
                     self.curr_image = self.curr_image.rotate(self.degree, expand=True)
                     # python 3.8 garbage collection issue
@@ -404,23 +398,19 @@ class Example(QWidget):
                     draw.line((250, 250, 250 + float(cos_y2), 250 + float(sin_x2)), fill=('red'), width=3)
                     self.label_a.setText('Угол падения в первой среде =')
                     self.label_a1.setText('Угол преломления в первой среде =')
-                    self.label_b.setText('Угол падения во второй среде =')
-                    self.label_b1.setText('Угол преломления во второй среде =')
                     if sr1 == sr2:
                         self.lcd_a.display(a)
                         self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(a)
-                        self.lcd_b1.display(a_prel)
+                        # self.lcd_b.display(a)
+                        # self.lcd_b1.display(a_prel)
                     else:
                         self.lcd_a.display(a)
                         self.lcd_a1.display(a_prel)
-                        self.lcd_b.display(b1)
-                        self.lcd_b1.display(90 - b1)
+                        # self.lcd_b.display(b1)
+                        # self.lcd_b1.display(90 - b1)
 
                     self.label_aa.setText('градусов')
                     self.label_aa1.setText('градусов')
-                    self.label_bb.setText('градусов')
-                    self.label_bb1.setText('градусов')
 
                     self.curr_image = self.curr_image.rotate(self.degree, expand=True)
                     # python 3.8 garbage collection issue
